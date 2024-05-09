@@ -1,24 +1,14 @@
-import { useEffect, useState } from "react";
 import { CDN_URL } from "../utils/constants";
-import { RES_MENU_URL } from "../utils/constants";
-import MenuCard from "./MenuCard";
+// import MenuCard from "./MenuCard";
 import { useParams } from "react-router-dom";
+import useRestaurantDetail from "../utils/useRestaurantDetail";
 import ShimmerRestaurant from "./ShimmerRestaurant";
+import RestaurantCategory from "./RestaurantCategory";
+import { useState } from "react";
 const RestaurantMenu = () => {
+  const [showIndex, setShowIndex] = useState(0);
   const { resId } = useParams();
-  const [restaurantDetail, setRestaurantDetail] = useState([]);
-  const [menuCards, setMenuCards] = useState([]);
-  const fetchMenu = async () => {
-    const data = await fetch(RES_MENU_URL + resId);
-    const resDetail = await data.json();
-    //   console.log(resDetail.data.cards[2].card.card.info);
-    setRestaurantDetail(resDetail.data.cards[2].card.card.info);
-    setMenuCards(resDetail.data.cards[4].groupedCard.cardGroupMap.REGULAR);
-    // console.log(menuCards.cards[1].card.card.itemCards);
-  };
-  useEffect(() => {
-    fetchMenu();
-  }, []);
+  const { restaurantDetail, menuCards } = useRestaurantDetail(resId);
   const {
     name,
     avgRatingString,
@@ -26,37 +16,64 @@ const RestaurantMenu = () => {
     cloudinaryImageId,
     totalRatingsString,
   } = restaurantDetail;
-  //   const deliveryTime =
-  //     restaurantDetail.nearestOutletNudge.nearestOutletInfo.siblingOutlet.sla
-  //       .deliveryTime;
   if (restaurantDetail.length === 0) return <ShimmerRestaurant />;
+  if (!menuCards || !menuCards.cards) {
+    return <ShimmerRestaurant />;
+  }
+
+  // console.log(menuCards);
+  const categoryCards = menuCards.cards.filter(
+    (card) =>
+      card.card.card["@type"] ===
+      "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+  );
+  // categoryCards.map((card) => console.log(card.card.card));
+  const itemCards = menuCards?.cards[1]?.card?.card?.itemCards;
   return (
     <>
-      <div className="container res-container">
-        <div>
-          <h1 className="name">{name}</h1>
-          <p className="details">
-            {avgRatingString}{" "}
-            <span className="ratingNumbers"> ({totalRatingsString})</span> -{" "}
-            {costForTwoMessage}
+      <div className="flex justify-between bg-slate-200 px-3 shadow-lg rounded-md items-center h-[12rem] w-[45rem] m-auto mb-10">
+        <div className="h-40">
+          <h1 className="font-semibold text-xl">{name}</h1>
+          <p className="mt-5 font-medium">
+            <span className="">{avgRatingString}</span>{" "}
+            <span className="text-sm font-normal"> ({totalRatingsString})</span>{" "}
+            - {costForTwoMessage}
           </p>
           <p className="delivery-time">30 minutes</p>
         </div>
         <div>
-          <img src={CDN_URL + cloudinaryImageId} className="image"></img>
+          <img
+            className="h-40 rounded-md w-40 object-cover shadow-lg"
+            src={CDN_URL + cloudinaryImageId}
+          ></img>
         </div>
       </div>
-      {menuCards &&
-        menuCards.cards &&
-        menuCards.cards[1] &&
-        menuCards.cards[1].card.card.itemCards &&
-        menuCards.cards[1].card.card.itemCards.map((itemCard) => {
+      {/* {categoryCards.map((card) => {
+        return (
+          <CorousolForCategory
+            category={card.card.card}
+            key={card.card.card.title}
+          />
+        );
+      })} */}
+      <div className="bg-slate-200 w-[45rem] mx-auto rounded shadow-md">
+        {categoryCards.map((card, index) => {
           return (
-            <MenuCard key={itemCard.card.info.id} item={itemCard.card.info} />
+            <RestaurantCategory
+              key={card.card.card.title}
+              category={card.card.card}
+              showItem={index === showIndex ?? false}
+              setShowIndex={() => setShowIndex(index)}
+            />
           );
         })}
+      </div>
 
-      {/* <MenuCard item={menuCards.cards[1].card.card.itemCards[0].card.info} /> */}
+      {/* {itemCards.map((itemCard) => {
+        return (
+          <MenuCard key={itemCard.card.info.id} item={itemCard.card.info} />
+        );
+      })} */}
     </>
   );
 };

@@ -5,15 +5,19 @@ const RestaurantCard = (restaurant) => {
   const src = `${CDN_URL}${cloudinaryImageId}`;
   return (
     <>
-      <div className="res--card">
-        <img className="res--img" src={src}></img>
-        <h2 className="res-name txt">{name}</h2>
-        <h3 className="res-rating txt">{avgRating} avg rating</h3>
-        <h3 className="res-details txt">{areaName}</h3>
-        <h3 className="res-details txt">
-          {restaurant.restaurant.sla.deliveryTime} Minutes
+      <div className="w-60 bg-white shadow-xl rounded-md m-2 h-[25rem] p-2 items-center hover:scale-[1.01] cursor-default">
+        <img
+          className="h-[15rem] w-[20rem] object-cover rounded-t-md shadow-md cursor-pointer"
+          src={src}
+          alt="Image"
+        ></img>
+        <h2 className="mt-2 font-medium">{name}</h2>
+        <h3>
+          <span className="font-medium">{avgRating}</span> avg rating
         </h3>
-        <h3 className="res-price txt">{costForTwo}</h3>
+        <h3>{areaName}</h3>
+        <h3>{restaurant.restaurant.sla.deliveryTime} Minutes</h3>
+        <h3 className="font-semibold  ">{costForTwo}</h3>
       </div>
     </>
   );

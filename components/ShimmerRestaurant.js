@@ -1,10 +1,15 @@
+import ShimmerResDetail from "./ShimmerResDetail";
+
 const ShimmerRestaurant = () => {
   return (
     <>
-      <div className="res-shimmer-container"></div>
-      <div className="item-shimmer-container"></div>
-      <hr></hr>
-      <div className="item-shimmer-container"></div>
+      <ShimmerResDetail key="a" />
+      <div className="mt-10"></div>
+      <ShimmerResDetail key="b" />
+      <br></br>
+      <ShimmerResDetail key="c" />
+      <br></br>
+      <ShimmerResDetail key="d" />
     </>
   );
 };

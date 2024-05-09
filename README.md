@@ -78,3 +78,75 @@ write routing configuration in app.js
   ],
   },
   ]);
+
+React life cycle :
+Mounting phase : Render(Constructor, Render dom) + Commit(Component did mount)
+
+Parent constructor
+Parent render
+
+First child constructor
+First child render
+Second child constructor
+Second child render
+
+- (DOM UPDATED - IN SINGLE BATCHES)
+  First child did mount
+  Second child did mount
+
+- Single responsibilty principle
+
+# lazy loading
+
+- https://react.dev/reference/react/lazy
+- Chunking
+- Code splitting
+- Dynamic Bundling
+- lazy loading
+- Dynamic import
+- Dynamic loading
+
+- SASS, SCSS
+- Styled components
+  https://styled-components.com/
+- Material ui - MUI
+- bootstrap
+- chakraUi
+- ant design
+
+// Higher order components -> takes component as input and return a component
+
+// managing state
+Redux, zustand
+redux -
+easy debugging
+manage state
+
+Vanilla reduc - old way of writing redux -
+Complicated, Include lot of packages to work, need more boilerplate code
+
+RTK (redux toolkit)
+
+react-redux
+
+# how redux works behind
+
+When [ADD] is clicked :
+Redux Store is a big JavaScrip object which is devided in different sections called as slices or redux store is partitioned on the basis of uses.
+
+[ADD] -> dispatches an [ACTION] -> [REDUCER] fn do the changes in respective slice
+
+How we get data from redux store ?
+When we click on cart, it SUBSCRIBED to the cart slice(store) via [selector] and access the data and cart is updated
+
+# redux toolkit
+
+- install @reduxjs/toolkit and react-redux
+- build our store
+- Slice(carSlice)
+- connect app with store
+- dispatch(action)
+- selector
+
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
